@@ -34,7 +34,7 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 | MI300A | CDNA3 (APU) | 61.3 | 128 | 5300 | HIP |
 | PVC | Xe HPC | 52.4 | 128 | 3280 | SYCL |
 
-### NVIDIA GPUs
+### NVIDIA Systens
 
 #### gn001 : V100 Cluster
 - **GPUs:** 10x NVIDIA V100 (32GB)
