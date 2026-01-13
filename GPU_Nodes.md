@@ -1,7 +1,7 @@
 # COSMA GPU Nodes
 Last updated: 2025-01-13 (verification needed on COSMA)
 
-## Quick Access Summary
+## Summary
 
 | GPU | Node(s) | Access Method | Partition | Account |
 |-----|---------|---------------|-----------|---------|
@@ -39,7 +39,7 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 #### gn001 : V100 Cluster
 - **GPUs:** 10x NVIDIA V100 (32GB)
 - **Host:** 768GB RAM, dual Intel Xeon Gold 5218 @ 2.3GHz
-- **Access:** Direct SSH from login node
+- **Access:** SSH
 - **Account:** do016 (needs verification)
 - **CUDA arch:** sm_70
 
@@ -63,14 +63,14 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 #### mad06 : A100/Milan-X Node
 - **GPUs:** 0-3x NVIDIA A100 (composable)
 - **Host:** 1TB RAM, 128 cores, Milan-X architecture (768MB L3 cache)
-- **Access:** Direct SSH
+- **Access:** SSH
 - **Account:** do016 (needs verification)
 - **CUDA arch:** sm_80
 
 #### gn002 : Grace-Hopper
 - **GPUs:** NVIDIA GH200
 - **Host:** ARM (aarch64)
-- **Access:** Direct SSH from login
+- **Access:** SSH
 - **Account:** do016
 - **CUDA arch:** sm_90
 - **Notes:** ARM host requires native compilation or cross-compilation
@@ -88,13 +88,13 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 #### gn004 : H100 PCIe
 - **GPUs:** 1x NVIDIA H100 PCIe
 - **Host:** x86 (Intel)
-- **Access:** Direct SSH from login node
+- **Access:** SSH
 - **Account:** do016 (need to verify this)
 - **CUDA arch:** sm_90
 
 ### AMD HIP/ROCm Systems
 
-#### ga004 - MI100
+#### ga004 : MI100
 - **GPUs:** 1x AMD MI100
 - **Host:** 1TB RAM, dual 64-core AMD EPYC Milan 7713 @ 2GHz (128 cores)
 - **Access:** Slurm partition `cosma8-shm2`
@@ -102,7 +102,7 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 - **ROCm arch:** gfx908
 - **ROCm version:** 6.3.0 (system-level, at `/opt/rocm-6.3.0/`)
 
-#### ga005, ga006 - MI210
+#### ga005, ga006 : MI210
 - **GPUs:** 2x AMD MI210 each
 - **Host:** 1TB RAM, dual 32-core EPYC 7513 (64 cores/node)
 - **Access:** Slurm partition `cosma8-shm2`
@@ -110,7 +110,7 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 - **ROCm arch:** gfx90a
 - **ROCm version:** 6.3.0
 
-#### ga007 - MI300X
+#### ga007 : MI300X
 - **GPUs:** 8x AMD MI300X
 - **Access:** Slurm partition `mi300x`
 - **Account:** do018
@@ -118,10 +118,10 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 - **Notes:** 
   - Highest memory bandwidth in cluster (5300 GB/s)
 
-#### ga008 - MI300A (APU)
+#### ga008 : MI300A (APU)
 - **GPUs:** 4x AMD MI300A
 - **Host:** 500GB shared RAM
-- **Access:** Direct SSH
+- **Access:** SSH
 - **Account:** do018
 - **ROCm arch:** gfx942
 - **Notes:**
@@ -129,7 +129,7 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 
 ### Intel Systems
 
-#### gi001 - Ponte Vecchio (DEAD)
+#### gi001 : Ponte Vecchio (DEAD)
 - **GPUs:** 2x Intel Ponte Vecchio
 - **Status:** Dead
 - **Notes:** Was using OneAPI/SYCL backend
@@ -141,12 +141,12 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 scontrol show partition=<partition_name> | grep AllowAccounts
 ```
 
-### Check your groups
+### Check groups you belong to
 ```bash
 id
 ```
 
-### Slurm submission examples
+### Slurm submission
 ```bash
 # A100 on cosma8-shm
 sbatch -p cosma8-shm -A do016 script.sh
@@ -155,7 +155,7 @@ sbatch -p cosma8-shm -A do016 script.sh
 srun -p mi300x -A do018 -t 10 --pty /bin/bash
 ```
 
-### Direct SSH access
+### SSH access
 ```bash
 # From a COSMA login node:
 ssh gn001    # V100s
