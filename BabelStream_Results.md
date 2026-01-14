@@ -3,11 +3,12 @@ Measures memory bandwidth across GPUs.
 
 ## Set Up
 BabelStream v5.0: https://github.com/UoB-HPC/BabelStream
+
 Parameters:
-- Array size: 134,217,728 (2²⁷) elements (~1GB per array, ~3GB total). (Array size must be a multiple of 1024)
-- Iterations: 100
-- Precision: double
-- Metric: Triad kernel bandwidth (GB/s)
+- **Array size:** 134,217,728 (2²⁷) elements (~1GB per array, ~3GB total). (Array size must be a multiple of 1024)
+- **Iterations:** 100
+- **Precision:** double
+- **Metric:** Triad kernel bandwidth (GB/s)
 
 ## Results Summary
 
