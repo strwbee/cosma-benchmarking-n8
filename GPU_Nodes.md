@@ -6,9 +6,8 @@ Last updated: 13/01/2026 (verification needed on COSMA)
 | GPU | Node(s) | Access Method | Partition | Account |
 |-----|---------|---------------|-----------|---------|
 | V100 (10x) | gn001 | Direct SSH | - | do016? |
-| A30 (composable) | gc001-008 | Slurm | dine2 | do015 |
-| A100 (composable) | mad04, mad05 | Slurm | cosma8-shm | do016 |
-| A100 (composable) | mad06 | Direct SSH | - | do016 |
+| A30 (8x) | gc001-008 | Slurm | dine2 | do015 |
+| A100 (3x) | mad04, mad05, mad06 | Slurm, SSH for mad06 | cosma8-shm | do016 |
 | GH200 | gn002 | Direct SSH | - | do016 |
 | GH200 | gn003 | Slurm | gracehopper | do016 |
 | H100 PCIe | gn004 | Direct SSH | - | do016 |
@@ -18,14 +17,14 @@ Last updated: 13/01/2026 (verification needed on COSMA)
 | MI300A (4x) | ga008 | Direct SSH | - | do018 |
 | PVC (2x) | gi001 | - | - | do017 |
 
-## GPU Specifications
+## GPU Specifications (Theoretical)
 
 | GPU | Architecture | FP64 TFLOPS | VRAM (GB) | Memory BW (GB/s) | Backend |
 |-----|--------------|-------------|-----------|------------------|---------|
 | V100 | Volta | 7.0 | 32 | 900 | CUDA |
 | A30 | Ampere | 5.2 | 24 | 933 | CUDA |
 | A100 | Ampere | 9.7 | 40 | 1555 | CUDA |
-| GH200 | Hopper | - | 96 | 4000 | CUDA |
+| GH200 | Hopper | 34 | 96 | 4000 | CUDA |
 | H100 PCIe | Hopper | 26 | 80 | 2000 | CUDA |
 | H100 SXM | Hopper | 34 | 80 | 3350 | CUDA |
 | MI100 | CDNA | 11.5 | 32 | 1200 | HIP |
