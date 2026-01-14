@@ -1,7 +1,7 @@
 # COSMA GPU Nodes
-Last updated: 2025-01-13 (verification needed on COSMA)
+Last updated: 13/01/2026 (verification needed on COSMA)
 
-## Summary
+## Summary of Available Nodes
 
 | GPU | Node(s) | Access Method | Partition | Account |
 |-----|---------|---------------|-----------|---------|
@@ -34,132 +34,103 @@ Last updated: 2025-01-13 (verification needed on COSMA)
 | MI300A | CDNA3 (APU) | 61.3 | 128 | 5300 | HIP |
 | PVC | Xe HPC | 52.4 | 128 | 3280 | SYCL |
 
-### NVIDIA Systens
+## Detailed Node Information
 
-#### gn001 : V100 Cluster
-- **GPUs:** 10x NVIDIA V100 (32GB)
-- **Host:** 768GB RAM, dual Intel Xeon Gold 5218 @ 2.3GHz
-- **Access:** SSH
-- **Account:** do016 (needs verification)
-- **CUDA arch:** sm_70
+### NVIDIA CUDA Systems
 
-#### gc001-008 : DINE2 A30 Cluster (composable)
-- **GPUs:** Up to 8x NVIDIA A30 per node (composable)
-- **Host:** 2TB RAM, dual 32-core Sapphire Rapids (64 cores/node)
-- **Access:** Slurm partition `dine2`
-- **Account:** do015
-- **CUDA arch:** sm_80
-- **Notes:** 
-  - Composable fabric (CerIO), GPUs can be allocated dynamically
-  - Total 8 GPUs across 8 nodes, configurable on request
-
-#### mad04, mad05 : A100 Nodes (composable)
-- **GPUs:** 0-3x NVIDIA A100 (40GB) each (composable with Liqid fabric)
-- **Host:** 4TB RAM, 128 cores
-- **Access:** Slurm partition `cosma8-shm`
-- **Account:** do016 (needs verification)
-- **CUDA arch:** sm_80
-
-#### mad06 : A100/Milan-X Node
-- **GPUs:** 0-3x NVIDIA A100 (composable)
-- **Host:** 1TB RAM, 128 cores, Milan-X architecture (768MB L3 cache)
-- **Access:** SSH
-- **Account:** do016 (needs verification)
-- **CUDA arch:** sm_80
-
-#### gn002 : Grace-Hopper
-- **GPUs:** NVIDIA GH200
-- **Host:** ARM (aarch64)
-- **Access:** SSH
-- **Account:** do016
-- **CUDA arch:** sm_90
-- **Notes:** ARM host requires native compilation or cross-compilation
-
-#### gn003 : Grace-Hopper
-- **GPUs:** NVIDIA GH200
-- **Host:** ARM (aarch64)
-- **Access:** Slurm partition `gracehopper`
-- **Account:** do016
-- **CUDA arch:** sm_90
-- **Build notes:**
-  - No system cmake. Use `pip3 install --user cmake` and add to PATH
-  - CUDA 13.0 available at `/usr/local/cuda-13.0/bin/nvcc`
-
-#### gn004 : H100 PCIe
-- **GPUs:** 1x NVIDIA H100 PCIe
-- **Host:** x86 (Intel)
-- **Access:** SSH
-- **Account:** do016 (need to verify this)
-- **CUDA arch:** sm_90
+| Node | GPUs | Host | Access | Account | Arch | Notes |
+|------|------|------|--------|---------|------|-------|
+| gn001 | 10x V100 (32GB) | 768GB, 2x Xeon Gold 5218 | SSH | do016? | sm_70 | |
+| gc001-008 | 0-8x A30 (composable) | 2TB, 64 cores (Sapphire Rapids) | `dine2` | do015 | sm_80 | CerIO fabric; 8 GPUs total across 8 nodes |
+| mad04, mad05 | 0-3x A100 40GB (composable) | 4TB, 128 cores | `cosma8-shm` | do016? | sm_80 | Liqid fabric; default 1 GPU each |
+| mad06 | 0-3x A100 (composable) | 1TB, 128 cores (Milan-X, 768MB L3) | SSH | do016? | sm_80 | |
+| gn002 | GH200 | ARM (aarch64) | SSH | do016 | sm_90 | ARM host: requires native compilation |
+| gn003 | GH200 | ARM (aarch64) | `gracehopper` | do016 | sm_90 | No system cmake; CUDA 13.0 at `/usr/local/cuda-13.0/` |
+| gn004 | 1x H100 PCIe | x86 (Intel) | SSH | do016? | sm_90 | |
 
 ### AMD HIP/ROCm Systems
 
-#### ga004 : MI100
-- **GPUs:** 1x AMD MI100
-- **Host:** 1TB RAM, dual 64-core AMD EPYC Milan 7713 @ 2GHz (128 cores)
-- **Access:** Slurm partition `cosma8-shm2`
-- **Account:** do018 (need to verify this)
-- **ROCm arch:** gfx908
-- **ROCm version:** 6.3.0 (system-level, at `/opt/rocm-6.3.0/`)
+| Node | GPUs | Host | Access | Account | Arch | Notes |
+|------|------|------|--------|---------|------|-------|
+| ga004 | 1x MI100 | 1TB, 128 cores (Milan 7713) | `cosma8-shm2` | do018? | gfx908 | |
+| ga005, ga006 | 2x MI210 each | 1TB, 64 cores (EPYC 7513) | `cosma8-shm2` | do018? | gfx90a | Use `--exclude=ga004` for MI210 |
+| ga007 | 8x MI300X | - | `mi300x` | do018 | gfx942 | |
+| ga008 | 4x MI300A | 500GB shared | SSH | do018 | gfx942 | APU: CPU/GPU share physical RAM |
 
-#### ga005, ga006 : MI210
-- **GPUs:** 2x AMD MI210 each
-- **Host:** 1TB RAM, dual 32-core EPYC 7513 (64 cores/node)
-- **Access:** Slurm partition `cosma8-shm2`
-- **Account:** do018 (need to verify this)
-- **ROCm arch:** gfx90a
-- **ROCm version:** 6.3.0
-
-#### ga007 : MI300X
-- **GPUs:** 8x AMD MI300X
-- **Access:** Slurm partition `mi300x`
-- **Account:** do018
-- **ROCm arch:** gfx942
-- **Notes:** 
-  - Highest memory bandwidth in cluster (5300 GB/s)
-
-#### ga008 : MI300A (APU)
-- **GPUs:** 4x AMD MI300A
-- **Host:** 500GB shared RAM
-- **Access:** SSH
-- **Account:** do018
-- **ROCm arch:** gfx942
-- **Notes:**
-  - APU architecture: GPU and CPU share physical RAM
+**Note:** ROCm 6.3.0 installed system level on AMD nodes at `/opt/rocm-6.3.0/`.
 
 ### Intel Systems
 
-#### gi001 : Ponte Vecchio (DEAD)
-- **GPUs:** 2x Intel Ponte Vecchio
-- **Status:** Dead
-- **Notes:** Was using OneAPI/SYCL backend
+| Node | GPUs | Access | Account | Status |
+|------|------|--------|---------|--------|
+| gi001 | 2x Ponte Vecchio | - | do017 | Dead |
 
-## Access Commands
+**Note:** Likely to stay dead for now!
 
-### Check partition access
+## Compilers
+
+| System | Compiler | Location | Notes |
+|--------|----------|----------|-------|
+| CUDA (x86 login) | nvcc 12.6 | `/usr/local/cuda-12.6/bin/nvcc` | No module needed |
+| CUDA (GH200) | nvcc 13.0 | `/usr/local/cuda-13.0/bin/nvcc` | ARM host: `pip3 install --user cmake` |
+| HIP (AMD nodes) | hipcc 6.3.0 | `/opt/rocm-6.3.0/bin/hipcc` | System-level: no module needed |
+
+**Note:** The `hipcc/6.0amd`, `hipcc/6.3amd`, `hipcc/7.0amd` modules only set CC/CXX environment variables for dependent modules (e.g. MPI). ROCm is already available at system level.
+
+## Project Codes (from SAFE)
+
+| Code | Systems |
+|------|---------|
+| do015 | DINE2 (A30s) |
+| do016 | NVIDIA GPUs (V100, A100, GH200, H100), cosma8-shm |
+| do017 | Intel GPUs (dead) |
+| do018 | AMD GPUs (MI100, MI210, MI300X, MI300A) |
+| do009 | DINE, miscellaneous |
+
+## Access/Useful Commands
+
+### Check partition and node status
 ```bash
+sinfo -a # list all partitions and statuses
+sinfo -p cosma8-shm2 -N -l # detailed node info for a partition
+squeue -p mi300x # show jobs running on partition
 scontrol show partition=<partition_name> | grep AllowAccounts
 ```
 
-### Check groups you belong to
+### Check access permissions
 ```bash
-id
+id # show groups you belong to
+scontrol show partition= | grep AllowAccounts # show accounts that can use partitions
 ```
+
+### GPU Availability:
+```bash
+# NVDIA nodes
+nvidia-smi
+
+# AMD nodes
+rocm-smi
+rocminfo
+```
+Can use in slurm script to check GPU present.
 
 ### Slurm submission
 ```bash
-# A100 on cosma8-shm
-sbatch -p cosma8-shm -A do016 script.sh
+# by partition
+sbatch -p cosma8-shm -A do016 script.sh # A100 on cosma8-shm
+# by specific node
+sbatch --nodelist=ga004 script.sh # ga004
 
-# Interactive MI300X session
-srun -p mi300x -A do018 -t 10 --pty /bin/bash
+# interactive session
+srun -p mi300x -A do018 -t 10 --pty /bin/bash # mi300x
 ```
 
-### SSH access
+### Direct SSH access
 ```bash
 # From a COSMA login node:
-ssh gn001    # V100s
-ssh gn002    # Grace-Hopper (ARM)
-ssh gn004    # H100
-ssh ga008    # MI300A
-ssh mad06    # A100 + Milan-X
+ssh gn001 # V100s
+ssh gn002 # Grace-Hopper (ARM)
+ssh gn004 # H100
+ssh ga008 # MI300A
+ssh mad06 # A100 + Milan-X
+```
