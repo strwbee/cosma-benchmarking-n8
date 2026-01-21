@@ -18,17 +18,15 @@ Parameters:
 | MI100 | ga004 | 1200 GB/s | 947 GB/s | 78.9% | ✓ |
 | MI210 | ga005/06 | 1600 GB/s | 1250 GB/s | 78.1% | ✓ |
 | GH200 | gn003 | 4000 GB/s | 3500 GB/s | 87.5% | ✓ |
-| A30 | gc001-008 | 933 GB/s | - | - | TODO |
-| V100 | gn001 | 900 GB/s | - | - | TODO |
-| H100 PCIe | gn004 | 2000 GB/s | - | - | TODO |
-| MI300X | ga007 | 5300 GB/s | - | - | TODO |
+| V100 | gn001 | 900 GB/s | 823 GB/s | 91.4% | ✓ |
+| H100 NVL | gn004 | 3938 GB/s | 3387 GB/s | 86.0% | ✓ |
+| MI300X | ga007 | 5300 GB/s | - | - | pending |
 | MI300A | ga008 | 5300 GB/s | - | - | TODO |
+| A30 | gc001-008 | 933 GB/s | - | - | nodes DRAINED |
 
 **Notes:**
-- MI300X was originally pending for a long time over winter. Need to be check if finished.
-- A30 on dine2 originally failed with exit code 53. Need to check if resolved.
-- MI300X and H100 originally marked Down. Need to check if resolved.
-- No cmake on Grace-Hopper: `pip3 install --user cmake` then add `$HOME/.local/bin` to PATH
+- No cmake on Grace-Hopper: `pip3 install --user cmake` then add `$HOME/.local/bin` to PATH.
+- Use `module load nvhpc/25.11` for CUDA on login.
 - ROCm not on login: cannot build HIP code from login, must allocate compute node.
 
 ## Build Instructions
@@ -41,11 +39,10 @@ cd /cosma5/data/do009/dc-nobl3/babelstream-benchmark
 git clone https://github.com/UoB-HPC/BabelStream.git
 cd BabelStream
 
-export PATH=/usr/local/cuda-12.6/bin:$PATH
-
-mkdir build-cuda-sm80 && cd build-cuda-sm80
+module load nvhpc/25.11
+...
 cmake .. -DMODEL=cuda \
-         -DCMAKE_CUDA_COMPILER=/usr/local/cuda-12.6/bin/nvcc \
+         -DCMAKE_CUDA_COMPILER=$(which nvcc) \
          -DCUDA_ARCH=sm_80
 make -j
 ```
@@ -65,6 +62,18 @@ export PATH=/usr/local/cuda-13.0/bin:$PATH
 mkdir build-cuda-sm90 && cd build-cuda-sm90
 cmake .. -DMODEL=cuda \
          -DCMAKE_CUDA_COMPILER=/usr/local/cuda-13.0/bin/nvcc \
+         -DCUDA_ARCH=sm_90
+make -j
+```
+
+### CUDA (x86 host, sm_90 - H100 NVL)
+Build on login node:
+```bash
+cd /cosma5/data/do009/dc-nobl3/babelstream-benchmark/BabelStream
+module load nvhpc/25.11
+mkdir build-cuda-sm90-x86 && cd build-cuda-sm90-x86
+cmake .. -DMODEL=cuda \
+         -DCMAKE_CUDA_COMPILER=$(which nvcc) \
          -DCUDA_ARCH=sm_90
 make -j
 ```
