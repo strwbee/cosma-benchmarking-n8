@@ -1,21 +1,20 @@
 # COSMA GPU Nodes
-Last updated: 13/01/2026 (verification needed on COSMA)
+Last updated: 21/01/2026
 
 ## Summary of Available Nodes
 
-| GPU | Node(s) | Access Method | Partition | Account |
-|-----|---------|---------------|-----------|---------|
-| V100 (10x) | gn001 | Direct SSH | - | do016? |
-| A30 (8x) | gc001-008 | Slurm | dine2 | do015 |
-| A100 (3x) | mad04, mad05, mad06 | Slurm, SSH for mad06 | cosma8-shm | do016 |
-| GH200 | gn002 | Direct SSH | - | do016 |
-| GH200 | gn003 | Slurm | gracehopper | do016 |
-| H100 PCIe | gn004 | Direct SSH | - | do016 |
-| MI100 | ga004 | Slurm | cosma8-shm2 | do018? |
-| MI210 (2x) | ga005, ga006 | Slurm | cosma8-shm2 | do018? |
-| MI300X (8x) | ga007 | Slurm | mi300x | do018 |
-| MI300A (4x) | ga008 | Direct SSH | - | do018 |
-| PVC (2x) | gi001 | - | - | do017 |
+| GPU | Count | Node(s) | Access | Partition | Account | Interconnect | Status |
+|-----|-------|---------|--------|-----------|---------|--------------|--------|
+| V100 | 6x | gn001 | SSH | - | do016 | - | ✓ |
+| A30 | 8x total | gc001-008 | Slurm | dine2 | do015 | CerIO (composable) | Draining |
+| A100 | 3x total | mad04-06 | Slurm / SSH | cosma8-shm | do016 | Liqid (composable) | ✓ |
+| GH200 | 1x | gn002-003 | Slurm / SSH | gracehopper | do016 | - | ✓ |
+| H100 NVL | 1x | gn004 | SSH | intelhopper (down) | do016 | - | ✓ (SSH only) |
+| MI100 | 1x | ga004 | Slurm | cosma8-shm2 | do018 | - | ✓ |
+| MI210 | 2x each | ga005-006 | Slurm | cosma8-shm2 | do018 | - | ga006 draining |
+| MI300X | 8x | ga007 | Slurm | mi300x | do018 | - | ✓ |
+| MI300A | 4x | ga008 | SSH | mi300a (down) | do018 | - | Down |
+| PVC | 2x | gi001 | - | - | do017 | - | Dead |
 
 ## GPU Specifications (Theoretical)
 
@@ -27,6 +26,7 @@ Last updated: 13/01/2026 (verification needed on COSMA)
 | GH200 | Hopper | 34 | 96 | 4000 | CUDA |
 | H100 PCIe | Hopper | 26 | 80 | 2000 | CUDA |
 | H100 SXM | Hopper | 34 | 80 | 3350 | CUDA |
+| H100 NVL | Hopper | 34 | 94 | 3938 | CUDA |
 | MI100 | CDNA | 11.5 | 32 | 1200 | HIP |
 | MI210 | CDNA2 | 22.6 | 64 | 1600 | HIP |
 | MI300X | CDNA3 | 81.7 | 192 | 5300 | HIP |
@@ -70,7 +70,7 @@ Last updated: 13/01/2026 (verification needed on COSMA)
 
 | System | Compiler | Location | Notes |
 |--------|----------|----------|-------|
-| CUDA (x86 login) | nvcc 12.6 | `/usr/local/cuda-12.6/bin/nvcc` | No module needed |
+| CUDA (x86, sm_80+) | nvcc 13.0 | `module load nvhpc/25.11` | sm_80, sm_90 |
 | CUDA (GH200) | nvcc 13.0 | `/usr/local/cuda-13.0/bin/nvcc` | ARM host: `pip3 install --user cmake` |
 | HIP (AMD nodes) | hipcc 6.3.0 | `/opt/rocm-6.3.0/bin/hipcc` | System-level: no module needed |
 
