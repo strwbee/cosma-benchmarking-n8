@@ -1,0 +1,26 @@
+====
+Starting job 9133686 at Tue Dec  9 12:24:49 PM GMT 2025 for user dc-nobl3.
+Running on nodes: gn003
+====
+Running on: gn003.pri.cosma.local
+GPU 0: NVIDIA GH200 480GB (UUID: GPU-e9e22471-35a9-cd88-19cf-96116f851dd8)
+---
+BabelStream
+Version: 5.0
+Implementation: CUDA
+Running kernels 100 times
+Precision: double
+Array size: 1073.7 MB (=1.1 GB)
+Total size: 3221.2 MB (=3.2 GB)
+Using CUDA device NVIDIA GH200 480GB
+Driver: 13000
+Memory: DEFAULT
+Reduction kernel config: 528 groups of (fixed) size 1024
+Init: 0.011387 s (=282897.705343 MBytes/sec)
+Read: 0.001061 s (=3035930.490446 MBytes/sec)
+Function    MBytes/sec  Min (sec)   Max         Average     
+Copy        3195327.344 0.00067     0.00068     0.00067     
+Mul         3171918.007 0.00068     0.00068     0.00068     
+Add         3494252.376 0.00092     0.00093     0.00092     
+Triad       3499840.798 0.00092     0.00092     0.00092     
+Dot         3683221.103 0.00058     0.00060     0.00059     

@@ -1,0 +1,33 @@
+====
+Starting job 9124432 at Sun Dec  7 03:46:54 PM GMT 2025 for user dc-nobl3.
+Running on nodes: ga004
+====
+Running on: ga004.pri.cosma.local
+  Marketing Name:          AMD EPYC 7713 64-Core Processor    
+  Marketing Name:          AMD EPYC 7713 64-Core Processor    
+  Marketing Name:          AMD EPYC 7713 64-Core Processor    
+  Marketing Name:          AMD EPYC 7713 64-Core Processor    
+  Marketing Name:          AMD EPYC 7713 64-Core Processor    
+  Marketing Name:          AMD EPYC 7713 64-Core Processor    
+  Marketing Name:          AMD EPYC 7713 64-Core Processor    
+  Marketing Name:          AMD EPYC 7713 64-Core Processor    
+  Marketing Name:          AMD Instinct MI100                 
+---
+BabelStream
+Version: 5.0
+Implementation: HIP
+Running kernels 100 times
+Precision: double
+Array size: 1073.7 MB (=1.1 GB)
+Total size: 3221.2 MB (=3.2 GB)
+Using HIP device AMD Instinct MI100
+Driver: 60342131
+Memory: DEFAULT
+Init: 0.135012 s (=23858.890636 MBytes/sec)
+Read: 0.238945 s (=13481.016080 MBytes/sec)
+Function    MBytes/sec  Min (sec)   Max         Average     
+Copy        1041431.414 0.00206     0.00207     0.00207     
+Mul         1039274.795 0.00207     0.00207     0.00207     
+Add         997453.582  0.00323     0.00336     0.00324     
+Triad       946799.381  0.00340     0.00342     0.00341     
+Dot         1022103.130 0.00210     0.00212     0.00211     
