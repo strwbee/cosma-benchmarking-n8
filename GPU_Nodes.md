@@ -8,7 +8,7 @@ Last updated: 21/01/2026
 | V100 | 6x | gn001 | SSH | - | do016 | - | ✓ |
 | A30 | 8x total | gc001-008 | Slurm | dine2 | do015 | CerIO (composable) | Draining |
 | A100 | 3x total | mad04-06 | Slurm / SSH | cosma8-shm | do016 | Liqid (composable) | ✓ |
-| GH200 | 1x | gn002-003 | Slurm / SSH | gracehopper | do016 | - | ✓ |
+| GH200 | 2x | gn002-003 | Slurm / SSH | gracehopper | do016 | - | ✓ |
 | H100 NVL | 1x | gn004 | SSH | intelhopper (down) | do016 | - | ✓ (SSH only) |
 | MI100 | 1x | ga004 | Slurm | cosma8-shm2 | do018 | - | ✓ |
 | MI210 | 2x each | ga005-006 | Slurm | cosma8-shm2 | do018 | - | ga006 draining |
