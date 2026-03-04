@@ -14,25 +14,27 @@ Parameters:
 
 | GPU | Node | Theoretical BW | Measured BW | Efficiency | Status |
 |-----|------|----------------|-------------|------------|--------|
+| V100 | gn001 | 900 GB/s | 823 GB/s | 91.4% | ✓ |
+| A30 | gc001-008 | 933 GB/s | 822 GB/s | 88.1% | ✓ |
 | A100 | mad04/05 | 1555 GB/s | 1352 GB/s | 86.9% | ✓ |
+| H100 NVL | gn004 | 3938 GB/s | 3387 GB/s | 86.0% | ✓ |
+| GH200 | gn003 | 4000 GB/s | 3500 GB/s | 87.5% | ✓ |
 | MI100 | ga004 | 1200 GB/s | 947 GB/s | 78.9% | ✓ |
 | MI210 | ga005/06 | 1600 GB/s | 1250 GB/s | 78.1% | ✓ |
-| GH200 | gn003 | 4000 GB/s | 3500 GB/s | 87.5% | ✓ |
-| V100 | gn001 | 900 GB/s | 823 GB/s | 91.4% | ✓ |
-| H100 NVL | gn004 | 3938 GB/s | 3387 GB/s | 86.0% | ✓ |
-| MI300X | ga007 | 5300 GB/s | - | - | pending |
-| MI300A | ga008 | 5300 GB/s | - | - | TODO |
-| A30 | gc001-008 | 933 GB/s | - | - | nodes DRAINED |
+| MI300A | ga008 | 5300 GB/s | 3648 GB/s | 68.8% | ✓ |
+| MI300X | ga007 | 5300 GB/s | 4036 GB/s | 76.2% | ✓ |
 
 **Notes:**
-- No cmake on Grace-Hopper: `pip3 install --user cmake` then add `$HOME/.local/bin` to PATH.
-- Use `module load nvhpc/25.11` for CUDA on login.
+
+- Use `module load nvhpc/25.11` for CUDA on login (or `nvhpc/24.5` for V100 sm_70).
 - ROCm not on login: cannot build HIP code from login, must allocate compute node.
+- ROCm 7.2.0 on MI300X (ga007), not 6.3.0.
+- dine2 nodes mount `/dine` not `/cosma5`: 
+- MI300A (ga008) doesn't mount `/cosma5`: copy binary to home directory (cp build-hip-mi300x/hip-stream ~)
 
 ## Build Instructions
 
-### CUDA (x86 host, sm_80 - A100, A30)
-
+### CUDA (A100, A30; x86 host, sm_80)
 Build on login node:
 ```bash
 cd /cosma5/data/do009/dc-nobl3/babelstream-benchmark
@@ -47,8 +49,7 @@ cmake .. -DMODEL=cuda \
 make -j
 ```
 
-### CUDA (Grace-Hopper, sm_90)
-
+### CUDA (Grace-Hopper; sm_90)
 Must build on compute node (ARM host):
 ```bash
 srun -p gracehopper -A do016 -t 30 --pty /bin/bash
@@ -66,7 +67,7 @@ cmake .. -DMODEL=cuda \
 make -j
 ```
 
-### CUDA (x86 host, sm_90 - H100 NVL)
+### CUDA (H100 NVL; x86 host, sm_90)
 Build on login node:
 ```bash
 cd /cosma5/data/do009/dc-nobl3/babelstream-benchmark/BabelStream
@@ -78,8 +79,7 @@ cmake .. -DMODEL=cuda \
 make -j
 ```
 
-### HIP (MI100, gfx908)
-
+### HIP (MI100; gfx908)
 Must build on compute node:
 ```bash
 srun -p cosma8-shm2 -A do018 --nodelist=ga004 -t 30 --pty /bin/bash
@@ -91,8 +91,7 @@ cmake .. -DMODEL=hip \
 make -j
 ```
 
-### HIP (MI210, gfx90a)
-
+### HIP (MI210; gfx90a)
 Must build on compute node:
 ```bash
 srun -p cosma8-shm2 -A do018 --exclude=ga004 -t 30 --pty /bin/bash
@@ -104,21 +103,18 @@ cmake .. -DMODEL=hip \
 make -j
 ```
 
-### HIP (MI300X/MI300A, gfx942)
-
+### HIP (MI300X, MI300A; gfx942)
 Must build on compute node:
 ```bash
 # for MI300X with Slurm 
 srun -p mi300x -A do018 -t 30 --pty /bin/bash
-
-# for MI300A with direct SSH
-ssh ga008
-
-mkdir build-hip-gfx942 && cd build-hip-gfx942
+mkdir build-hip-mi300x-mi300a && cd build-hip-mi300x-mi300a
 cmake .. -DMODEL=hip \
-         -DCMAKE_CXX_COMPILER=/opt/rocm-6.3.0/bin/hipcc \
+         -DCMAKE_CXX_COMPILER=/opt/rocm-7.2.0/bin/hipcc \
          -DCMAKE_HIP_ARCHITECTURES=gfx942
 make -j
+
+# for MI300A: copy binary to home, then ssh ga008 and run from ~
 ```
 
 ## Run Commands
@@ -131,7 +127,7 @@ make -j
 ./hip-stream --arraysize 134217728 --numtimes 100
 ```
 
-## Example Slurm Script
+## Example Slurm Scripts
 
 ### A100 (cosma8-shm)
 ```bash
@@ -149,4 +145,21 @@ nvidia-smi  # verify GPU present
 # replace with your working directory here
 cd /cosma5/data/do009/dc-nobl3/babelstream-benchmark/BabelStream/build-cuda-sm80
 ./cuda-stream --arraysize 134217728 --numtimes 100
+```
+
+### A30 (dine2)
+Note: dine2 nodes mount `/dine` not `/cosma5`.
+```bash
+#!/bin/bash
+#SBATCH --job-name=babelstream-a30
+#SBATCH --partition=dine2
+#SBATCH --account=do015
+#SBATCH --time=00:10:00
+#SBATCH --output=babel-a30-%j.out
+#SBATCH --error=babel-a30-%j.err
+
+nvidia-smi
+
+# replace with your working directory here, ensure /dine not /cosma5
+/dine/data/do009/dc-nobl3/babelstream/cuda-stream --arraysize 134217728 --numtimes 100
 ```
