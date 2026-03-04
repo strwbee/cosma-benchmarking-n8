@@ -1,0 +1,10 @@
+#!/bin/bash
+# build on login node for H100 NVL
+
+cd /cosma5/data/do009/dc-nobl3/babelstream-benchmark/BabelStream
+module load nvhpc/25.11
+mkdir -p build-cuda-sm90-x86 && cd build-cuda-sm90-x86
+cmake .. -DMODEL=cuda \
+         -DCMAKE_CUDA_COMPILER=$(which nvcc) \
+         -DCUDA_ARCH=sm_90
+make -j
